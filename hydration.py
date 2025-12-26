@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import datetime
-from keras.applications import MobileNetV2
+from tensorflow.keras.applications import MobileNetV2
 from keras.applications.mobilenet_v2 import preprocess_input, decode_predictions
 from keras.preprocessing import image
 import matplotlib.pyplot as plt

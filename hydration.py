@@ -1,11 +1,20 @@
+import os
 import streamlit as st
 import numpy as np
 import pandas as pd
 import datetime
-from tensorflow.keras.applications import MobileNetV2
-from keras.applications.mobilenet_v2 import preprocess_input, decode_predictions
-from keras.preprocessing import image
 import matplotlib.pyplot as plt
+
+# TensorFlow / Keras imports (consistent)
+from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input, decode_predictions
+from tensorflow.keras.preprocessing import image
+
+# -------------------------------
+# Suppress TensorFlow logs
+# -------------------------------
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
 # -------------------------------
 # Custom CSS for background & styling
@@ -153,7 +162,10 @@ def hydration_analysis():
         st.line_chart(df.set_index("time")["amount"])
 
         # Download option
-        st.download_button("Download Log", df.to_csv(index=False), "hydration_log.csv")
+        import io
+        csv_buffer = io.StringIO()
+        df.to_csv(csv_buffer, index=False)
+        st.download_button("Download Log", csv_buffer.getvalue(), "hydration_log.csv", "text/csv")
     else:
         st.info("No hydration data to analyze yet.")
 
